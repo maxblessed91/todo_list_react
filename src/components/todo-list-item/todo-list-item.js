@@ -42,7 +42,7 @@ export default class TodoListItem extends Component {
 
     render() {
 
-        const { label } = this.props; // Из этого места можно получить текущие свойства
+        const { label, onDeleted } = this.props; // Из этого места можно получить текущие свойства
         const { done, important } = this.state; // используем деструктуризацию, для того чтобы достать done из state
 
         let classNames = 'todo-list-item';
@@ -69,7 +69,8 @@ export default class TodoListItem extends Component {
                 </button>
 
                 <button type='button'
-                        className='btn btn-outline-danger btn-sm float-right'>
+                        className='btn btn-outline-danger btn-sm float-right'
+                        onClick={onDeleted}>
                     <i className='fa fa-trash-o'/>
                 </button>
             </span>
