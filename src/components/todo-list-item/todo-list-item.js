@@ -4,29 +4,6 @@ import './todo-list-item.css';
 
 export default class TodoListItem extends Component {
 
-    state = {
-        done: false,
-        important: false
-    }; // Добавляем состояние реакт компонента
-
-    onLabelClick = () => {
-        // console.log(`Done: ${this.props.label}`);
-        this.setState(({done}) => {
-            return {
-                done: !done
-            };
-        });
-    }; // Добавление EventListener
-
-
-    onMarkImportant = () => {
-        this.setState(({important}) => {
-            return {
-                important: !important
-            }
-        });
-    };
-
     // constructor() {
     //     super();
 
@@ -39,11 +16,12 @@ export default class TodoListItem extends Component {
     //     console.log(`Done: ${this.props.label}`);
     // }
 
-
     render() {
 
-        const { label, onDeleted } = this.props; // Из этого места можно получить текущие свойства
-        const { done, important } = this.state; // используем деструктуризацию, для того чтобы достать done из state
+        const { label, onDeleted,
+                onToggleImportant,
+                onToggleDone,
+                important, done } = this.props; // Из этого места можно получить текущие свойства
 
         let classNames = 'todo-list-item';
         if (done) {
@@ -58,13 +36,13 @@ export default class TodoListItem extends Component {
             <span className={classNames}>
                 <span
                     className="todo-list-item-label"
-                    onClick={ this.onLabelClick }>
+                    onClick={onToggleDone}>
                     { label }
                 </span>
 
                 <button type='button'
                         className='btn btn-outline-success btn-sm float-right'
-                        onClick={this.onMarkImportant}>
+                        onClick={onToggleImportant}>
                     <i className='fa fa-exclamation'/>
                 </button>
 
