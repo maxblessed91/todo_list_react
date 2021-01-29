@@ -18,7 +18,8 @@ export default class App extends Component {
             this.createTodoItem('Drink Coffee'),
             this.createTodoItem('Make Awesome App'),
             this.createTodoItem('Have a lunch')
-    ]
+        ],
+        text: ''
 };
 
 createTodoItem(label) {
@@ -64,6 +65,27 @@ addItem = (text) => {
     });
 };
 
+onSearchItem = (items, text) => {
+    // console.log('Find element');
+    if (text.length === 0) {
+        return items;
+    }
+
+    return items.filter((item) => {
+        return item.label.toLowerCase()
+        .indexOf(text.toLowerCase()) > -1; //  indexOf вернёт 0 и больше, если строка содержится и -1, если её нет, toLowerCase() нужен чтобы поиск был регистронечувствительным
+    });
+    // const filteredArray = this.todoData.filter(item => item.indexOf(text) > -1)
+
+    // return {
+    //     todoData: filteredArray
+    // }
+}
+
+onSearchChange = (text) => {
+    this.setState({ text });
+};
+
 toggleProperty(arr, id, propName) {
 
 
@@ -101,7 +123,8 @@ onToggleDone = (id) => {
 };
 
     render() {
-        const { todoData } = this.state;
+        const { todoData, text } = this.state;
+        const visibleItems = this.onSearchItem(todoData, text)
         const doneCount = todoData
                             .filter((el) => el.done).length;
         const todoCount = todoData.length - doneCount;
@@ -109,11 +132,12 @@ onToggleDone = (id) => {
             <div className='todo-app'>
                 <AppHeader toDo={todoCount} done={doneCount} />
                 <div className='top-panel d-flex'>
-                    <SearchPanel />
+                    <SearchPanel
+                    onSearchChange={this.onSearchChange} />
                     <ItemStatusFilter />
                 </div>
                 <TodoList
-                todos={todoData}
+                todos={visibleItems}
                 onDeleted={ this.deleteItem }
                 onToggleImportant={this.onToggleImportant}
                 onToggleDone={this.onToggleDone}
